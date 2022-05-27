@@ -19,6 +19,12 @@ export class MinesweeperContainerComponent implements OnInit {
     this.mineSweeperService.revealCell(row, column);
   }
 
+  flagCell(row: number, column: number, event: any) {
+    event.preventDefault();
+    console.log('flagging')
+    this.mineSweeperService.flagCell(row, column);
+  }
+
 
   ngOnInit(): void {
   }
