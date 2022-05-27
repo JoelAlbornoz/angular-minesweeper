@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { interval, Observable, of, Subject, take } from 'rxjs';
 import { Cell } from '../models/cellModel';
 import { StatusModel } from '../models/statusModel';
 
@@ -12,8 +13,7 @@ export class MinesweeperStateService {
 
   constructor() {
     //Se inicializa un estado vacio
-    this.status = { grid: [], mines: 0, flags: 0, revealed: 0 };
-
+    this.status = { grid: [], mines: 0, flags: 0, revealed: 0, time: of(0), gamerunning: false, victory: false };
     //Se genera una grid de 10x10 con 10 minas
     this.buildGrid(10, 10, 10);
   }
@@ -45,6 +45,10 @@ export class MinesweeperStateService {
     this.calculateProximityMines();
   }
 
+  startTimer() {
+    this.status.time = interval(1000)
+  }
+
   calculateProximityMines() {
     for (let i = 0; i < this.status.grid!.length; i++) {
       for (let j = 0; j < this.status.grid![0].length; j++) {
@@ -74,7 +78,12 @@ export class MinesweeperStateService {
   revealCell(row: number, column: number) {
     if (this.status.grid![row][column].status === 'hidden') {
       if (this.status.grid![row][column].mine) {
-        //Game over
+        this.status.gamerunning = false;
+        this.status.victory = false;
+        this.revealAllCells();
+        this.status.time!.pipe(take(1)).subscribe((t) => {
+          this.status.finalTime = t;
+        });
       } else {
         //En caso de que la celda esté vacía y sin minas cercanas
         if (this.status.grid![row][column].proximityMines === 0) {
@@ -92,7 +101,16 @@ export class MinesweeperStateService {
 
   checkTotalRevealedCells() {
     if (this.status.revealed === this.status.grid!.length * this.status.grid![0].length - this.status.mines!) {
-      //Lógica de victoria
+      this.status.victory = true;
+      this.status.gamerunning = false;
+    }
+  }
+
+  revealAllCells() {
+    for (let i = 0; i < this.status.grid!.length; i++) {
+      for (let j = 0; j < this.status.grid![0].length; j++) {
+        this.status.grid![i][j].status = 'revealed';
+      }
     }
   }
 
