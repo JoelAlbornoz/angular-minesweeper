@@ -1,1 +1,14 @@
-<p>minesweeper-container works!</p>
+<div class="minesweeper__container container">
+  <div class="minesweeper__container__row row" *ngFor="let row of grid; index as fila">
+    <div class="minesweeper__container__row__cell col" *ngFor="let cell of row index as columna"
+      (click)="revealCell(fila,columna)">
+      <!-- Mapeo de celdas-->
+      <span *ngIf="cell.status == 'revealed' && (cell.proximityMines != 0 && !cell.mine)">{{cell.proximityMines}}</span>
+      <span *ngIf="cell.status == 'revealed' && cell.mine">*</span>
+      <span *ngIf="cell.status == 'revealed' && cell.proximityMines == 0 && !cell.mine">0</span>
+      <span *ngIf="cell.status == 'flagged'">F</span>
+      <span *ngIf="cell.status == 'hidden'"></span>
+
+    </div>
+  </div>
+</div>

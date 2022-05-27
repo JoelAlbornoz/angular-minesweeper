@@ -1,5 +1,5 @@
 export class Cell {
-  status: 'hidden' | 'mine' | 'flag' | 'proximity' | 'empty' = 'hidden';
+  status: 'hidden' | 'mine' | 'flag' | 'revealed' = 'hidden';
   mine = false;
   proximityMines = 0;
 

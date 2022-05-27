@@ -53,6 +53,7 @@ export class MinesweeperStateService {
         }
       }
     }
+    console.log(this.status.grid);
   }
 
   calculateProximityMinesForCell(row: number, column: number) {
@@ -81,7 +82,7 @@ export class MinesweeperStateService {
         }
         //En caso de que la celda esté vacía y con minas cercanas
         else {
-          this.status.grid![row][column].status = 'proximity';
+          this.status.grid![row][column].status = 'revealed';
           this.status.revealed!++;
         }
       }
@@ -96,7 +97,7 @@ export class MinesweeperStateService {
   }
 
   revealEmptyCell(row: number, column: number) {
-    this.status.grid![row][column].status = 'empty';
+    this.status.grid![row][column].status = 'revealed';
     this.status.revealed!++;
     this.PEERS.forEach(peer => {
       let r = row + peer[0];
