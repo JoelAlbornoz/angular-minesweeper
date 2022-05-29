@@ -6,7 +6,9 @@
       <span *ngIf="cell.status == 'revealed' && (cell.proximityMines != 0 && !cell.mine)">{{cell.proximityMines}}</span>
       <span *ngIf="cell.status == 'revealed' && cell.mine">*</span>
       <span *ngIf="cell.status == 'revealed' && cell.proximityMines == 0 && !cell.mine">0</span>
-      <span *ngIf="cell.status == 'flag'">F</span>
+      <span class="icon-container" *ngIf="cell.status == 'flag'">
+        <mat-icon class="icon">flag</mat-icon>
+      </span>
       <span *ngIf="cell.status == 'hidden'"></span>
     </div>
   </div>

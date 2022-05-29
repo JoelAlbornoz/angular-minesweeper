@@ -7,6 +7,13 @@
     border: 5px outset #5d69a5;
     background-color: #8a86c5;
     height: 30px;
+    width: 30px;
+    padding: 0px;
+  }
+
+  .icon {
+    color: red;
+    transform: scale(0.7);
   }
 
   .minesweeper__container__row__cell:hover {

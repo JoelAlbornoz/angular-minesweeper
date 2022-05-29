@@ -132,7 +132,7 @@ export class MinesweeperStateService {
   }
 
   flagCell(row: number, column: number) {
-    if (this.status.grid![row][column].status === 'hidden') {
+    if (this.status.grid![row][column].status === 'hidden' && this.status.flags! < this.status.mines!) {
       this.status.grid![row][column].status = 'flag';
       this.status.flags!++;
     } else if (this.status.grid![row][column].status === 'flag') {
