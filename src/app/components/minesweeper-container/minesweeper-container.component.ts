@@ -10,7 +10,7 @@ import { MinesweeperStateService } from 'src/app/services/minesweeper-state.serv
 export class MinesweeperContainerComponent implements OnInit {
   grid: any;
 
-  constructor(private mineSweeperService: MinesweeperStateService) {
+  constructor(public mineSweeperService: MinesweeperStateService) {
     this.mineSweeperService.status.gamerunning!.subscribe(status => {
       this.grid = mineSweeperService.status.grid;
     })
