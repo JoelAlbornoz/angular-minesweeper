@@ -1,6 +1,6 @@
 .minesweeper__container {
   width: 450px;
-  height: 100px;
+  height: 270px;
   text-align: center;
 
   .minesweeper__container__row__cell {
@@ -12,5 +12,10 @@
   .minesweeper__container__row__cell:hover {
     border: 5px outset #4c4875;
     background-color: #67668f;
+  }
+
+  @media screen and (max-width: 785px) {
+    width: 340px;
+    height: 250px;
   }
 }

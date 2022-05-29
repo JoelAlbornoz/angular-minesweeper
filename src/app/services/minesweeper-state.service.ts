@@ -8,14 +8,16 @@ import { StatusModel } from '../models/statusModel';
 })
 export class MinesweeperStateService {
 
+  intervalSubscription: any;
   public status: StatusModel;
   PEERS = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
 
   constructor() {
     //Se inicializa un estado vacio
-    this.status = { grid: [], mines: 0, flags: 0, revealed: 0, time: of(0), gamerunning: false, victory: false };
+    this.status = { grid: [], mines: 0, flags: 0, revealed: 0, time: new Subject<number>(), gamerunning: new Subject<boolean>(), victory: false, finalTime: new Subject<number>() };
+    this.status.gamerunning?.next(false)
     //Se genera una grid de 10x10 con 10 minas
-    this.buildGrid(10, 10, 10);
+    this.buildGrid(8, 8, 8);
   }
 
   buildGrid(rows: number, columns: number, mines: number) {
@@ -46,7 +48,9 @@ export class MinesweeperStateService {
   }
 
   startTimer() {
-    this.status.time = interval(1000)
+    this.intervalSubscription = interval(1000).subscribe((v) => {
+      this.status.time!.next(v)
+    });
   }
 
   calculateProximityMines() {
@@ -78,12 +82,11 @@ export class MinesweeperStateService {
   revealCell(row: number, column: number) {
     if (this.status.grid![row][column].status === 'hidden') {
       if (this.status.grid![row][column].mine) {
-        this.status.gamerunning = false;
+        //Lógica a ejecutar si se clickeó una mina, game over
+        this.status.gamerunning?.next(false)
         this.status.victory = false;
         this.revealAllCells();
-        this.status.time!.pipe(take(1)).subscribe((t) => {
-          this.status.finalTime = t;
-        });
+        this.intervalSubscription.unsubscribe();
       } else {
         //En caso de que la celda esté vacía y sin minas cercanas
         if (this.status.grid![row][column].proximityMines === 0) {
@@ -100,9 +103,9 @@ export class MinesweeperStateService {
   }
 
   checkTotalRevealedCells() {
-    if (this.status.revealed === this.status.grid!.length * this.status.grid![0].length - this.status.mines!) {
+    if (this.status.revealed! + this.status.flags! === this.status.grid!.length * this.status.grid![0].length - this.status.mines!) {
       this.status.victory = true;
-      this.status.gamerunning = false;
+      this.status.gamerunning?.next(false)
     }
   }
 
@@ -135,5 +138,17 @@ export class MinesweeperStateService {
       this.status.grid![row][column].status = 'hidden';
       this.status.flags!--;
     }
+  }
+
+  startGame() {
+    this.status.gamerunning?.next(true)
+    this.status.victory = false;
+    this.startTimer();
+  }
+
+  resetGame() {
+    this.status.time!.next(0);
+    this.buildGrid(8, 8, 8);
+    this.startGame();
   }
 }

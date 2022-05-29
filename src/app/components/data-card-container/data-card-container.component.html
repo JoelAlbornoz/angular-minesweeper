@@ -1,1 +1,9 @@
-<p>data-card-container works!</p>
+<div class="data-card__container">
+  <span *ngIf="gameRunning"><b>Tiempo:</b> {{time |async}}</span>
+  <span [class.d-none]="gameRunning"><b>Tiempo final: </b>{{time |async}}</span>
+  <span><b>Banderas restantes: </b>{{8 - stateService.status.flags!}}</span>
+  <button mat-raised-button color="primary" *ngIf="(!gameRunning && !startedFirstTime)"
+    (click)="startGame()">Comenzar</button>
+  <button mat-raised-button color="primary" *ngIf="(!gameRunning && startedFirstTime)"
+    (click)="startGame()">Reiniciar</button>
+</div>

@@ -1,4 +1,4 @@
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { Cell } from "./cellModel";
 
 export class StatusModel {
@@ -6,8 +6,8 @@ export class StatusModel {
   mines?: number;
   flags?: number;
   revealed?: number;
-  time?: Observable<number>;
-  gamerunning?: boolean;
+  time?: Subject<number>;
+  gamerunning?: Subject<boolean>;
   victory?: boolean;
-  finalTime?: number;
+  finalTime?: Subject<number>;
 }

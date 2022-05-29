@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { StatusModel } from 'src/app/models/statusModel';
 import { MinesweeperStateService } from 'src/app/services/minesweeper-state.service';
 
 @Component({
@@ -12,7 +11,9 @@ export class MinesweeperContainerComponent implements OnInit {
   grid: any;
 
   constructor(private mineSweeperService: MinesweeperStateService) {
-    this.grid = mineSweeperService.status.grid;
+    this.mineSweeperService.status.gamerunning!.subscribe(status => {
+      this.grid = mineSweeperService.status.grid;
+    })
   }
 
   revealCell(row: number, column: number) {
@@ -21,7 +22,6 @@ export class MinesweeperContainerComponent implements OnInit {
 
   flagCell(row: number, column: number, event: any) {
     event.preventDefault();
-    console.log('flagging')
     this.mineSweeperService.flagCell(row, column);
   }
 
