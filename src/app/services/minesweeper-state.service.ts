@@ -100,13 +100,13 @@ export class MinesweeperStateService {
       }
     }
     this.checkTotalRevealedCells();
-    this.intervalSubscription.unsubscribe();
   }
 
   checkTotalRevealedCells() {
     if (this.status.revealed! === this.status.grid!.length * this.status.grid![0].length - this.status.mines!) {
       this.status.victory = true;
       this.status.gamerunning?.next(false)
+      this.intervalSubscription.unsubscribe();
     }
   }
 
