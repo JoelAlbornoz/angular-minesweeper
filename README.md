@@ -1,6 +1,7 @@
 # AngularMinesweeper
 
 Estos son algunos de los componentes más reelevantes del proyecto
+visible en https://joelalbornoz.github.io/angular-minesweeper/
 
 ## MinesweeperStateService
 
